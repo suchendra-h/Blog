@@ -9,7 +9,6 @@ export const UserInfoPage = () => {
   const [token, setToken] = useToken();
 
   const { id, email, isVerified, info } = user;
-  console.log(id);
 
   // We'll use the history to navigate the user
   // programmatically later on (we're not using it yet)
@@ -17,8 +16,8 @@ export const UserInfoPage = () => {
 
   // These states are bound to the values of the text inputs
   // on the page (see JSX below).
-  const [favoriteFood, setFavoriteFood] = useState(info.favoriteFood || "");
-  const [hairColor, setHairColor] = useState(info.hairColor || "");
+  const [name, setName] = useState(info.name || "");
+  const [lastName, setLastName] = useState(info.lastName || "");
   const [bio, setBio] = useState(info.bio || "");
 
   // These state variables control whether or not we show
@@ -44,8 +43,8 @@ export const UserInfoPage = () => {
       const response = await axios.put(
         `/api/users/${id}`,
         {
-          favoriteFood,
-          hairColor,
+          name,
+          lastName,
           bio,
         },
         {
@@ -67,8 +66,8 @@ export const UserInfoPage = () => {
   };
 
   const resetValues = () => {
-    setFavoriteFood(info.favoriteFood);
-    setHairColor(info.hairColor);
+    setName(info.name);
+    setLastName(info.lastName);
     setBio(info.bio);
   };
 
@@ -76,11 +75,11 @@ export const UserInfoPage = () => {
   return (
     <div className="content-container">
       <h1>Info for {email}</h1>
-      {!isVerified && (
+      {/* {!isVerified && (
         <div className="fail">
           You won't be able to make any changes until you verify your email
         </div>
-      )}
+      )} */}
       {showSuccessMessage && (
         <div className="success">Successfully saved user data!</div>
       )}
@@ -90,27 +89,19 @@ export const UserInfoPage = () => {
         </div>
       )}
       <label>
-        Favorite Food:
-        <input
-          onChange={(e) => setFavoriteFood(e.target.value)}
-          value={favoriteFood}
-        />
+        Name {name && isVerified} :
+        <input onChange={(e) => setName(e.target.value)} value={name} />
       </label>
       <label>
-        Hair Color:
-        <input
-          onChange={(e) => setHairColor(e.target.value)}
-          value={hairColor}
-        />
+        Last Name:
+        <input onChange={(e) => setLastName(e.target.value)} value={lastName} />
       </label>
       <label>
         Bio:
         <input onChange={(e) => setBio(e.target.value)} value={bio} />
       </label>
       <hr />
-      <button disabled={!isVerified} onClick={saveChanges}>
-        Save Changes
-      </button>
+      <button onClick={saveChanges}>Save Changes</button>
       <button onClick={resetValues}>Reset Values</button>
       <button onClick={logOut}>Log Out</button>
     </div>

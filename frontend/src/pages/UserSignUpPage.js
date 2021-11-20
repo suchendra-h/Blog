@@ -54,7 +54,13 @@ export const UserSignUpPage = () => {
           Sing Up
         </button>
         <button>Forgot your pasword?</button>
-        <button navigate={UserLoginPage}>Already have an accoune? Login</button>
+        <button
+          onClick={() => {
+            navigate("/login");
+          }}
+        >
+          Already have an accoune? Login
+        </button>
       </div>
     </div>
   );
