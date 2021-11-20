@@ -5,7 +5,7 @@ import { UserLoginPage } from "./UserLoginPage";
 import { useToken } from "../auth/useToken";
 import axios from "axios";
 
-export const SignUpPage = () => {
+export const UserSignUpPage = () => {
   const [token, setToken] = useToken();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -59,3 +59,5 @@ export const SignUpPage = () => {
     </div>
   );
 };
+
+export default UserSignUpPage;

@@ -77,3 +77,5 @@ export const UserLoginPage = () => {
     </div>
   );
 };
+
+export default UserLoginPage;

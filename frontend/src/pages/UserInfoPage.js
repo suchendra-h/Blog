@@ -1,29 +1,23 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useToken } from "../auth/useToken";
 import { useUser } from "../auth/useUser";
 
 export const UserInfoPage = () => {
-  // Using Navigate hook to redirect to login page
-  const navigate = useNavigate();
-
   const user = useUser();
   const [token, setToken] = useToken();
 
-  // Get the initial values from the user in local storage
-  const { id, info } = user;
+  const { id, email, isVerified, info } = user;
+  console.log(id);
 
-  // We'll use navigate to navigate the user
+  // We'll use the history to navigate the user
   // programmatically later on (we're not using it yet)
-  //   const history = useHistory();
+  const navigate = useNavigate();
 
   // These states are bound to the values of the text inputs
   // on the page (see JSX below).
-
   const [favoriteFood, setFavoriteFood] = useState(info.favoriteFood || "");
-  const [name, setName] = useState(info.name || "");
-  const [lastName, setLastName] = useState(info.lastName || "");
   const [hairColor, setHairColor] = useState(info.hairColor || "");
   const [bio, setBio] = useState(info.bio || "");
 
@@ -46,22 +40,19 @@ export const UserInfoPage = () => {
   }, [showSuccessMessage, showErrorMessage]);
 
   const saveChanges = async () => {
-    // Send a request to the server to
-    // update the user's info with any changes we've
-    // made to the text input values
     try {
       const response = await axios.put(
         `/api/users/${id}`,
         {
-          name,
-          lastName,
           favoriteFood,
           hairColor,
           bio,
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
-      //   console.log(response.data);
+
       const { token: newToken } = response.data;
       setToken(newToken);
       setShowSuccessMessage(true);
@@ -71,17 +62,11 @@ export const UserInfoPage = () => {
   };
 
   const logOut = () => {
-    // We'll want to log the user out here
-    // and send them to the "login page"
     localStorage.removeItem("token");
     navigate("/login");
   };
 
   const resetValues = () => {
-    // Reset the text input values to
-    // their starting values (the data we loaded from the server)
-    setName(info.name);
-    setLastName(info.lastName);
     setFavoriteFood(info.favoriteFood);
     setHairColor(info.hairColor);
     setBio(info.bio);
@@ -90,7 +75,12 @@ export const UserInfoPage = () => {
   // And here we have the JSX for our component. It's pretty straightforward
   return (
     <div className="content-container">
-      {name ? <h1>Info for {name}</h1> : <h1>Info for {user.email}</h1>}
+      <h1>Info for {email}</h1>
+      {!isVerified && (
+        <div className="fail">
+          You won't be able to make any changes until you verify your email
+        </div>
+      )}
       {showSuccessMessage && (
         <div className="success">Successfully saved user data!</div>
       )}
@@ -99,14 +89,6 @@ export const UserInfoPage = () => {
           Uh oh... something went wrong and we couldn't save changes
         </div>
       )}
-      <label>
-        Name:
-        <input onChange={(e) => setName(e.target.value)} value={name} />
-      </label>
-      <label>
-        Last Name:
-        <input onChange={(e) => setLastName(e.target.value)} value={lastName} />
-      </label>
       <label>
         Favorite Food:
         <input
@@ -126,7 +108,9 @@ export const UserInfoPage = () => {
         <input onChange={(e) => setBio(e.target.value)} value={bio} />
       </label>
       <hr />
-      <button onClick={saveChanges}>Save Changes</button>
+      <button disabled={!isVerified} onClick={saveChanges}>
+        Save Changes
+      </button>
       <button onClick={resetValues}>Reset Values</button>
       <button onClick={logOut}>Log Out</button>
     </div>
