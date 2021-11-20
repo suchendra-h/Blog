@@ -1,6 +1,5 @@
 "use strict";
 import Express from "express";
-import { MongoClient } from "mongodb";
 import path from "path";
 import { routes } from "./routes/index.js";
 import { initializeDbConnection } from "./db.js";

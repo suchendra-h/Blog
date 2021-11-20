@@ -11,9 +11,11 @@ export const loginRoute = {
     const { email, password } = req.body;
     const db = getDbConnection("react-auth-db");
     const user = await db.collection("users").findOne({ email });
-    const { _id: id, info, passHash, isVerified } = user;
+    console.log(user);
 
     if (!user) return res.sendStatus(401); // user not found in DB
+
+    const { _id: id, info, passHash, isVerified } = user;
     const isPassCorrect = await bcrypt.compare(password, passHash);
 
     // sign the data and send the token back to the user
