@@ -4,9 +4,11 @@ import "../static/css/UserLoginPage.css";
 import axios from "axios";
 import { useToken } from "../auth/useToken";
 import { useQueryParams } from "../util/useQueryParams.js";
+import { useUser } from "../auth/useUser";
+import getUserFromToken from "../util/getUserFromToken";
 
-export const UserLoginPage = () => {
-  const [, setToken] = useToken("");
+export const UserLoginPage = (props) => {
+  const [token, setToken] = useToken("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   //   const [errorTxt, setErrorTxt] = useState("");
@@ -15,13 +17,23 @@ export const UserLoginPage = () => {
   const navigate = useNavigate();
   const { token: oauthToken } = useQueryParams();
 
+  // When token changes, sets the parent components user state.
+  // From the new token
+  useEffect(() => {
+    props.setUser(getUserFromToken(token));
+  }, [token, props, props.user]);
+
+  //   if there is an update in oauthToken sets the token to the new oauthToken
   useEffect(() => {
     if (oauthToken) {
       setToken(oauthToken);
+      props.setUser(getUserFromToken(oauthToken));
       navigate("/user");
     }
-  }, [oauthToken, setToken, navigate]);
-  // GETs the google OAUTH url from the backend and sets the state
+  }, [oauthToken, setToken, navigate, props]);
+
+  // GETs the google OAUTH url from the backend and sets the state.
+  // Runs only once
   useEffect(() => {
     const load = async () => {
       try {
@@ -34,6 +46,8 @@ export const UserLoginPage = () => {
     };
     load();
   }, []);
+
+  // Loging button click handler, token is null if query fails
   const onLoginClicked = async () => {
     const response = await axios.post("/api/login", {
       email: email,

@@ -2,23 +2,32 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useToken } from "../auth/useToken";
-import { useUser } from "../auth/useUser";
+import getUserFromToken from "../util/getUserFromToken";
 
-export const UserInfoPage = () => {
-  const user = useUser();
+export const UserInfoPage = (props) => {
+  const user = props.user;
+  //   console.log("in user info page", user);
   const [token, setToken] = useToken();
-
-  const { id, email, isVerified, info } = user;
-
-  // We'll use the history to navigate the user
-  // programmatically later on (we're not using it yet)
-  const navigate = useNavigate();
-
   // These states are bound to the values of the text inputs
   // on the page (see JSX below).
-  const [name, setName] = useState(info.name || "");
-  const [lastName, setLastName] = useState(info.lastName || "");
-  const [bio, setBio] = useState(info.bio || "");
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [bio, setBio] = useState("");
+
+  // Programmatically redirect to login page if user not logged in.
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    } else {
+      setName(user.info.name);
+      setLastName(user.info.lastName);
+      setBio(user.info.bio);
+    }
+  }, [user, navigate]);
+
+  // TODO: Find why react gives an error even if we are going to redirect to login in above useEffect hook.
+  const { id, email, isVerified, info } = user ? user : {};
 
   // These state variables control whether or not we show
   // the success and error message sections after making
@@ -54,6 +63,7 @@ export const UserInfoPage = () => {
 
       const { token: newToken } = response.data;
       setToken(newToken);
+      props.setUser(getUserFromToken(newToken));
       setShowSuccessMessage(true);
     } catch (error) {
       setShowErrorMessage(true);
@@ -71,7 +81,7 @@ export const UserInfoPage = () => {
     setBio(info.bio);
   };
 
-  // And here we have the JSX for our component. It's pretty straightforward
+  // And here we have the JSX for our component.
   return (
     <div className="content-container">
       <h1>Info for {email}</h1>
