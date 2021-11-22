@@ -11,7 +11,7 @@ export const signUpRoute = {
   handler: async (req, res) => {
     const { email, password } = req.body;
     const attributes = [
-      new CognitoUserAttribute({ name: "email", Value: email }),
+      new CognitoUserAttribute({ Name: "email", Value: email }),
     ];
 
     awsUserPool.signUp(

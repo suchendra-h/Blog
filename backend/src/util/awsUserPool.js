@@ -1,5 +1,7 @@
 import { CognitoUserPool } from "amazon-cognito-identity-js";
-import AWS, { CognitoIdentityCredentials } from "aws-sdk";
+import AWS from "aws-sdk";
+import pkg from "aws-sdk";
+const { CognitoIdentityCredentials } = pkg; // aws-sdk is a CommonJS module
 import nodeFetch from "node-fetch";
 
 global.fetch = nodeFetch;
@@ -10,8 +12,8 @@ AWS.config.credentials = new CognitoIdentityCredentials({
 });
 
 const poolData = {
-    UserPoolId = process.env.AWS_USER_POOL_ID,
-    ClientId = process.env.AWS_CLIENT_ID,
-}
+  UserPoolId: process.env.AWS_USER_POOL_ID,
+  ClientId: process.env.AWS_CLIENT_ID,
+};
 
 export const awsUserPool = new CognitoUserPool(poolData);

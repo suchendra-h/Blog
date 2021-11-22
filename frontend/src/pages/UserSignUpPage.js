@@ -19,9 +19,10 @@ export const UserSignUpPage = () => {
       email: email,
       password: password,
     });
+    // TODO: implement error handling here
     const { token } = response.data;
     setToken(token);
-    navigate("/");
+    navigate("/user");
   };
   return (
     <div className="page-container">

@@ -11,10 +11,10 @@ import UserLogInPage from "../pages/UserLoginPage";
 import UserSignUpPage from "../pages/UserSignUpPage";
 import { UserInfoPage } from "../pages/UserInfoPage";
 import { useUser } from "../auth/useUser";
+import { EmailVerificationCodePage } from "../pages/EmailVerificationCodePage";
 
 const App = () => {
   const [user, setUser] = useState(useUser());
-  console.log("App component user:", user);
   return (
     <Router>
       <div className="App">
@@ -30,6 +30,10 @@ const App = () => {
               element={<UserLogInPage user={user} setUser={setUser} />}
             />
             <Route path="/signup" element={<UserSignUpPage />} />
+            <Route
+              path="/verify-email"
+              element={<EmailVerificationCodePage />}
+            />
             <Route
               path="/user"
               element={<UserInfoPage user={user} setUser={setUser} />}
