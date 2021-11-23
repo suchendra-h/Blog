@@ -7,7 +7,7 @@ export const verifyEmailRoute = {
   path: "/api/verify-email",
   method: "put",
   handler: async (req, res) => {
-    const { verificationString } = req.body;
+    const { email, verificationString } = req.body;
 
     new CognitoUser({ Username: email, Pool: awsUserPool }).confirmRegistration(
       verificationString,
@@ -26,6 +26,7 @@ export const verifyEmailRoute = {
             { $set: { isVerified: true } },
             { returnOriginal: false, returnDocument: "after" }
           );
+        console.log(result);
         const { _id: id, info } = result.value;
         jwt.sign(
           { id, email, isVerified: true, info },

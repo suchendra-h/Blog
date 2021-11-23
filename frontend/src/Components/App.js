@@ -1,4 +1,15 @@
-import React, { useEffect, useState } from "react";
+// TODO: Things to fix:
+// 1. navbar doesn't update when a user signs up unless he goes to the user info
+// page
+//
+// 2. Error handling in email verification code page
+//
+// 3. Findig a way to update user state and token state at the same time in
+// useToken hook
+//
+// 4. Update the useUsr hook to update the global user context insteead
+
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import AboutPage from "../pages/AboutPage";
@@ -12,6 +23,7 @@ import UserSignUpPage from "../pages/UserSignUpPage";
 import { UserInfoPage } from "../pages/UserInfoPage";
 import { useUser } from "../auth/useUser";
 import { EmailVerificationCodePage } from "../pages/EmailVerificationCodePage";
+import { PleaseVerifyEmailPage } from "../pages/PleaseVerifyEmailPage";
 
 const App = () => {
   const [user, setUser] = useState(useUser());
@@ -32,8 +44,9 @@ const App = () => {
             <Route path="/signup" element={<UserSignUpPage />} />
             <Route
               path="/verify-email"
-              element={<EmailVerificationCodePage />}
+              element={<EmailVerificationCodePage setUser={setUser} />}
             />
+            <Route path="/please-verify" element={<PleaseVerifyEmailPage />} />
             <Route
               path="/user"
               element={<UserInfoPage user={user} setUser={setUser} />}

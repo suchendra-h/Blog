@@ -28,7 +28,7 @@ export const UserInfoPage = (props) => {
 
   // TODO: Find why react gives an error even if we are going to redirect to login in above useEffect hook.
   const { id, email, isVerified, info } = user ? user : {};
-
+  console.log("is verified", isVerified);
   // These state variables control whether or not we show
   // the success and error message sections after making
   // a network request (see JSX below).
@@ -81,6 +81,12 @@ export const UserInfoPage = (props) => {
     setBio(info.bio);
   };
 
+  // Redirects the user to verification page. They can then enter 6 digit
+  // code and verify
+  const redirectToVerify = () => {
+    navigate(`/please-verify?email=${encodeURIComponent(email)}`);
+  };
+
   // And here we have the JSX for our component.
   return (
     <div className="content-container">
@@ -113,6 +119,9 @@ export const UserInfoPage = (props) => {
       <hr />
       <button onClick={saveChanges}>Save Changes</button>
       <button onClick={resetValues}>Reset Values</button>
+      {!isVerified && (
+        <button onClick={redirectToVerify}>Verify Your Account</button>
+      )}
       <button onClick={logOut}>Log Out</button>
     </div>
   );

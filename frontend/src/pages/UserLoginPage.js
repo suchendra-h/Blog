@@ -13,7 +13,6 @@ export const UserLoginPage = (props) => {
   const [password, setPassword] = useState("");
   //   const [errorTxt, setErrorTxt] = useState("");
   const [googleOauthUrl, setGoogleOauthURL] = useState("");
-
   const navigate = useNavigate();
   const { token: oauthToken } = useQueryParams();
 
@@ -27,7 +26,9 @@ export const UserLoginPage = (props) => {
   useEffect(() => {
     if (oauthToken) {
       setToken(oauthToken);
-      props.setUser(getUserFromToken(oauthToken));
+      let local_user = getUserFromToken(oauthToken);
+      console.log(local_user);
+      props.setUser(local_user);
       navigate("/user");
     }
   }, [oauthToken, setToken, navigate, props]);
@@ -76,7 +77,13 @@ export const UserLoginPage = (props) => {
           Log in
         </button>
         <button>Forgot your pasword?</button>
-        <button>Don't have an account? Sign Up</button>
+        <button
+          onClick={() => {
+            navigate("/signup");
+          }}
+        >
+          Don't have an account? Sign Up
+        </button>
         <hr></hr>
 
         <button

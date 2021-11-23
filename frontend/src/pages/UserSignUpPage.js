@@ -22,7 +22,8 @@ export const UserSignUpPage = () => {
     // TODO: implement error handling here
     const { token } = response.data;
     setToken(token);
-    navigate("/user");
+
+    navigate(`/please-verify?email=${encodeURIComponent(email)}`);
   };
   return (
     <div className="page-container">
@@ -60,7 +61,7 @@ export const UserSignUpPage = () => {
             navigate("/login");
           }}
         >
-          Already have an accoune? Login
+          Already have an account? Login
         </button>
       </div>
     </div>

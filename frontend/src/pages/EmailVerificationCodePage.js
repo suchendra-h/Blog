@@ -4,14 +4,16 @@ import { EmailVerificationSuccess } from "./EmailVerificationSuccess.js";
 import { EmailVerificationFail } from "./EmailVerificationFail.js";
 import { useToken } from "../auth/useToken";
 import { useQueryParams } from "../util/useQueryParams.js";
+import { useUser } from "../auth/useUser.js";
 
-export const EmailVerificationCodePage = () => {
+export const EmailVerificationCodePage = (props) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isFailure, setIsFailure] = useState(false);
 
   const [verificationString, setVerificationString] = useState("");
   const { email } = useQueryParams();
   const [, setToken] = useToken();
+  const user = useUser();
 
   const onSubmitVerificationString = async () => {
     try {
@@ -21,6 +23,7 @@ export const EmailVerificationCodePage = () => {
       });
       const { token } = response.data;
       setToken(token);
+      props.setUser(user);
       setIsSuccess(true);
     } catch (e) {
       setIsFailure(true);
