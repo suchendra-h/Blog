@@ -24,6 +24,8 @@ import { UserInfoPage } from "../pages/UserInfoPage";
 import { useUser } from "../auth/useUser";
 import { EmailVerificationCodePage } from "../pages/EmailVerificationCodePage";
 import { PleaseVerifyEmailPage } from "../pages/PleaseVerifyEmailPage";
+import { AwsForgotPasswordPage } from "../pages/AwsForgotPasswordPage";
+import { AwsPasswordResetLandingPage } from "../pages/AwsPasswordResetLandingPage";
 
 const App = () => {
   const [user, setUser] = useState(useUser());
@@ -43,6 +45,10 @@ const App = () => {
             />
             <Route path="/signup" element={<UserSignUpPage />} />
             <Route
+              path="/forgot-password"
+              element={<AwsForgotPasswordPage setUser={setUser} />}
+            />
+            <Route
               path="/verify-email"
               element={<EmailVerificationCodePage setUser={setUser} />}
             />
@@ -50,6 +56,10 @@ const App = () => {
             <Route
               path="/user"
               element={<UserInfoPage user={user} setUser={setUser} />}
+            />
+            <Route
+              path="/reset-password"
+              element={<AwsPasswordResetLandingPage setUser={setUser} />}
             />
             <Route path="*" element={<NotFoundPage />} /> */
           </Routes>

@@ -21,7 +21,7 @@ export const signUpRoute = {
       null,
       async (err, awsResul) => {
         if (err) {
-          console.log(err);
+          //   console.log(err);
           return res.status(500).json({ message: "Unable to signup on aws" });
         }
         const db = getDbConnection("react-auth-db");

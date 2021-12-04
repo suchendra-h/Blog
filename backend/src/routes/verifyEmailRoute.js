@@ -26,7 +26,6 @@ export const verifyEmailRoute = {
             { $set: { isVerified: true } },
             { returnOriginal: false, returnDocument: "after" }
           );
-        console.log(result);
         const { _id: id, info } = result.value;
         jwt.sign(
           { id, email, isVerified: true, info },
@@ -34,7 +33,7 @@ export const verifyEmailRoute = {
           { expiresIn: "2w" },
 
           (err, token) => {
-            console.log(token);
+            // console.log(token);
             if (err) return res.sendStatus(500);
             res.status(200).json({ token });
           }

@@ -76,7 +76,13 @@ export const UserLoginPage = (props) => {
         <button disabled={!email || !password} onClick={onLoginClicked}>
           Log in
         </button>
-        <button>Forgot your pasword?</button>
+        <button
+          onClick={() => {
+            navigate("/forgot-password");
+          }}
+        >
+          Forgot your pasword?
+        </button>
         <button
           onClick={() => {
             navigate("/signup");
