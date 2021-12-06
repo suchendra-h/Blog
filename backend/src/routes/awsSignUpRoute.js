@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 import { awsUserPool } from "../util/awsUserPool.js";
 
-export const signUpRoute = {
+export const awsSignUpRoute = {
   path: "/api/signup",
   method: "post",
   handler: async (req, res) => {

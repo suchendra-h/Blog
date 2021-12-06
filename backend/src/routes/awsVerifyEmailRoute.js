@@ -3,7 +3,7 @@ import { getDbConnection } from "../db.js";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { awsUserPool } from "../util/awsUserPool.js";
 
-export const verifyEmailRoute = {
+export const awsVerifyEmailRoute = {
   path: "/api/verify-email",
   method: "put",
   handler: async (req, res) => {
