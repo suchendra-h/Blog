@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useToken } from "../auth/useToken";
-import getUserFromToken from "../util/getUserFromToken";
+import { UserContext } from "../contexts/UserContextProvider";
 
-export const UserInfoPage = (props) => {
-  const user = props.user;
-  //   console.log("in user info page", user);
+export const UserInfoPage = () => {
+  const context = useContext(UserContext);
+  const user = context.user;
   const [token, setToken] = useToken();
   // These states are bound to the values of the text inputs
   // on the page (see JSX below).
@@ -63,7 +63,6 @@ export const UserInfoPage = (props) => {
 
       const { token: newToken } = response.data;
       setToken(newToken);
-      props.setUser(getUserFromToken(newToken));
       setShowSuccessMessage(true);
     } catch (error) {
       setShowErrorMessage(true);
@@ -72,6 +71,7 @@ export const UserInfoPage = (props) => {
 
   const logOut = () => {
     localStorage.removeItem("token");
+    setToken(null);
     navigate("/login");
   };
 

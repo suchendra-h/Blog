@@ -28,49 +28,29 @@ import { AwsForgotPasswordPage } from "../pages/AwsForgotPasswordPage";
 import { ForgotPasswordPage } from "../pages/ForgotPasswordPage";
 import { AwsPasswordResetLandingPage } from "../pages/AwsPasswordResetLandingPage";
 
+
+import UserProviderComponent from "../contexts/UserContextProvider";
+
 const App = () => {
-  const [user, setUser] = useState(useUser());
-  const authBackend = "Own";
   return (
     <Router>
-      <div className="App">
-        <NavBar user={user} />
-        <div id="page-body">
-          <Routes>
-            <Route path="/" element={<HomePage />} exact />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/articles-list" element={<ArticlesList />} />
-            <Route path="/article/:name" element={<ArticlePage />} />
-            <Route
-              path="/login"
-              element={<UserLogInPage user={user} setUser={setUser} />}
-            />
-            <Route path="/signup" element={<UserSignUpPage />} />
-            {authBackend === "Own" ? (
-              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            ) : (
-              <Route
-                path="/forgot-password"
-                element={<AwsForgotPasswordPage setUser={setUser} />}
-              />
-            )}
-            <Route
-              path="/verify-email"
-              element={<EmailVerificationCodePage setUser={setUser} />}
-            />
-            <Route path="/please-verify" element={<PleaseVerifyEmailPage />} />
-            <Route
-              path="/user"
-              element={<UserInfoPage user={user} setUser={setUser} />}
-            />
-            <Route
-              path="/reset-password"
-              element={<AwsPasswordResetLandingPage setUser={setUser} />}
-            />
-            <Route path="*" element={<NotFoundPage />} /> */
-          </Routes>
+      <UserProviderComponent>
+        <div className="App">
+          <NavBar />
+          <div id="page-body">
+            <Routes>
+              <Route path="/" element={<HomePage />} exact />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/articles-list" element={<ArticlesList />} />
+              <Route path="/article/:name" element={<ArticlePage />} />
+              <Route path="/login" element={<UserLogInPage />} />
+              <Route path="/signup" element={<UserSignUpPage />} />
+              <Route path="/user" element={<UserInfoPage />} />
+              <Route path="*" element={<NotFoundPage />} /> */
+            </Routes>
+          </div>
         </div>
-      </div>
+      </UserProviderComponent>
     </Router>
   );
 };

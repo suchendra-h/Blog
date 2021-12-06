@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../contexts/UserContextProvider";
 
-const NavBar = (props) => {
-  const user = props.user;
+const NavBar = () => {
+  const context = useContext(UserContext);
+  const user = context?.user;
+
   const [navDispText, setNavDispText] = useState(() => {
     return user ? user.email : "";
   });
