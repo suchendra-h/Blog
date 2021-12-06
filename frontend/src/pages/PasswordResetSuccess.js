@@ -3,10 +3,6 @@ import { useNavigate } from "react-router-dom";
 export const PasswordResetSuccess = () => {
   const navigate = useNavigate();
 
-  setTimeout(() => {
-    navigate("/");
-  }, 3000);
-
   return (
     <div className="content-container">
       <h1>Success!</h1>
@@ -14,7 +10,7 @@ export const PasswordResetSuccess = () => {
         Your password has been reset, now please login with your new password.
       </p>
 
-      {/* <button onClick={() => navigate("/login")}>Log in</button> */}
+      <button onClick={() => navigate("/login")}>Log in</button>
     </div>
   );
 };

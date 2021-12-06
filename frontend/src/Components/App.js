@@ -25,10 +25,12 @@ import { useUser } from "../auth/useUser";
 import { EmailVerificationCodePage } from "../pages/EmailVerificationCodePage";
 import { PleaseVerifyEmailPage } from "../pages/PleaseVerifyEmailPage";
 import { AwsForgotPasswordPage } from "../pages/AwsForgotPasswordPage";
+import { ForgotPasswordPage } from "../pages/ForgotPasswordPage";
 import { AwsPasswordResetLandingPage } from "../pages/AwsPasswordResetLandingPage";
 
 const App = () => {
   const [user, setUser] = useState(useUser());
+  const authBackend = "Own";
   return (
     <Router>
       <div className="App">
@@ -44,10 +46,14 @@ const App = () => {
               element={<UserLogInPage user={user} setUser={setUser} />}
             />
             <Route path="/signup" element={<UserSignUpPage />} />
-            <Route
-              path="/forgot-password"
-              element={<AwsForgotPasswordPage setUser={setUser} />}
-            />
+            {authBackend === "Own" ? (
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            ) : (
+              <Route
+                path="/forgot-password"
+                element={<AwsForgotPasswordPage setUser={setUser} />}
+              />
+            )}
             <Route
               path="/verify-email"
               element={<EmailVerificationCodePage setUser={setUser} />}
