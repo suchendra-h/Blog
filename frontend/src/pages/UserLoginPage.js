@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "../static/css/UserLoginPage.css";
 import axios from "axios";
 import { useToken } from "../auth/useToken";
 import { useQueryParams } from "../util/useQueryParams.js";
-import { useUser } from "../auth/useUser";
-import getUserFromToken from "../util/getUserFromToken";
+import { UserContext } from "../contexts/UserContextProvider";
 
-export const UserLoginPage = (props) => {
+export const UserLoginPage = () => {
+  const context = useContext(UserContext);
   const [token, setToken] = useToken("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,20 +17,13 @@ export const UserLoginPage = (props) => {
   const navigate = useNavigate();
   const { token: oauthToken } = useQueryParams();
 
-  // When token changes, sets the parent components user state.
-  // From the new token
-  useEffect(() => {
-    props.setUser(getUserFromToken(token));
-  }, [token, props, props.user]);
-
   //   if there is an update in oauthToken sets the token to the new oauthToken
   useEffect(() => {
     if (oauthToken) {
       setToken(oauthToken);
-      props.setUser(getUserFromToken(oauthToken));
       navigate("/user");
     }
-  }, [oauthToken, setToken, navigate, props]);
+  }, [oauthToken, context, setToken, navigate]);
 
   // GETs the google OAUTH url from the backend and sets the state.
   // Runs only once

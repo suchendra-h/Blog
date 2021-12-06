@@ -1,7 +1,10 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { useToken } from "./useToken";
+import { UserContext } from "../contexts/UserContextProvider";
 
 export const useUser = (props) => {
+  const context = useContext(UserContext);
+
   const [token] = useToken();
 
   //   getPayloadFromToken is a memoized function.
@@ -23,15 +26,11 @@ export const useUser = (props) => {
     if (!token) {
       setUser(null);
     } else {
-      setUser(getPayloadFromToken(token));
+      let local_user = getPayloadFromToken(token);
+      setUser(local_user);
+      context.updateUser(local_user);
     }
-  }, [token, getPayloadFromToken]);
+  }, [token, context, getPayloadFromToken]);
 
-  // If caller of this hook passes a function in props.stateHandler,
-  // we call that function here. This is used to set state in a parent/child
-  // component.
-  if (props && props.stateHandler) {
-    props.stateHandler(user);
-  }
   return user;
 };
