@@ -1,15 +1,13 @@
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export const PasswordResetFail = () => {
-    const history = useHistory();
+  const navigate = useNavigate();
 
-    return (
-        <div className="content-container">
-            <h1>Uh oh...</h1>
-            <p>
-                Something went wrong while trying to reset your password.
-            </p>
-            <button onClick={() => history.push('/login')}>Back to Log in</button>
-        </div>
-    );
-}
+  return (
+    <div className="content-container">
+      <h1>Uh oh...</h1>
+      <p>Something went wrong while trying to reset your password.</p>
+      <button onClick={() => navigate("/login")}>Back to Log in</button>
+    </div>
+  );
+};

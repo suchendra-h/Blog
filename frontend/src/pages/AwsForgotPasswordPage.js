@@ -1,25 +1,26 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export const ForgotPasswordPage = () => {
-  const [emailValue, setEmailValue] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
+export const AwsForgotPasswordPage = () => {
+  const [errorMessage, setErrorMessage] = useState("");
   const [success, setSuccess] = useState(false);
-
+  const [emailValue, setEmailValue] = useState("");
   const navigate = useNavigate();
+
   const onSubmitClicked = async () => {
     try {
       await axios.put(`/api/forgot-password/${emailValue}`);
-      // TODO: Error handling
+      // TODO: Error Handling
       setSuccess(true);
       setTimeout(() => {
-        navigate("/login");
+        navigate(`/reset-password?email=${encodeURIComponent(emailValue)}`);
       }, 3000);
-    } catch (error) {
-      setErrorMsg(error.message);
+    } catch (e) {
+      setErrorMessage(e.message);
     }
   };
+
   return success ? (
     <div className="content-container">
       <h1>Success</h1>
@@ -28,17 +29,15 @@ export const ForgotPasswordPage = () => {
   ) : (
     <div className="content-container">
       <h1>Forgot Password</h1>
-      <p>Enter your email and we will send you a reset link</p>
-      {errorMsg && <div className="fail">{errorMsg}</div>}
+      <p>Enter your email and we'll send you a reset link</p>
+      {errorMessage && <div className="fail">{errorMessage}</div>}
       <input
         value={emailValue}
-        onChange={(e) => {
-          setEmailValue(e.target.value);
-        }}
-        placeholder="someone@domain.com"
+        onChange={(e) => setEmailValue(e.target.value)}
+        placeholder="someone@gmail.com"
       />
       <button disabled={!emailValue} onClick={onSubmitClicked}>
-        Submit
+        Send Reset Link
       </button>
     </div>
   );

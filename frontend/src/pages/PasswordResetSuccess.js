@@ -1,15 +1,16 @@
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export const PasswordResetSuccess = () => {
-    const history = useHistory();
+  const navigate = useNavigate();
 
-    return (
-        <div className="content-container">
-            <h1>Success!</h1>
-            <p>
-                Your password has been reset, now please login with your new password.
-            </p>
-            <button onClick={() => history.push('/login')}>Log in</button>
-        </div>
-    );
-}
+  return (
+    <div className="content-container">
+      <h1>Success!</h1>
+      <p>
+        Your password has been reset, now please login with your new password.
+      </p>
+
+      <button onClick={() => navigate("/login")}>Log in</button>
+    </div>
+  );
+};
