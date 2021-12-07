@@ -1,15 +1,9 @@
 // TODO: Things to fix:
-// 1. navbar doesn't update when a user signs up unless he goes to the user info
-// page
-//
-// 2. Error handling in email verification code page
-//
-// 3. Findig a way to update user state and token state at the same time in
-// useToken hook
-//
-// 4. Update the useUsr hook to update the global user context insteead
+// 1. writing two app.js files for AWS solution and housebrew solution,
 
-import React, { useState } from "react";
+// Also keep in mind that it should be almost similar from the frontend view if we are using aws or homebrew, it is backend's problem
+
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import AboutPage from "../pages/AboutPage";
@@ -21,11 +15,11 @@ import NotFoundPage from "../pages/NotFoundPage";
 import UserLogInPage from "../pages/UserLoginPage";
 import UserSignUpPage from "../pages/UserSignUpPage";
 import { UserInfoPage } from "../pages/UserInfoPage";
-import { useUser } from "../auth/useUser";
 import { EmailVerificationCodePage } from "../pages/EmailVerificationCodePage";
 import { PleaseVerifyEmailPage } from "../pages/PleaseVerifyEmailPage";
 import { AwsForgotPasswordPage } from "../pages/AwsForgotPasswordPage";
-import { ForgotPasswordPage } from "../pages/ForgotPasswordPage";
+
+// import { ForgotPasswordPage } from "../pages/ForgotPasswordPage";
 import { AwsPasswordResetLandingPage } from "../pages/AwsPasswordResetLandingPage";
 
 import UserProviderComponent from "../contexts/UserContextProvider";
@@ -61,7 +55,7 @@ const App = () => {
                 path="/verify-email"
                 element={<EmailVerificationCodePage />}
               />
-              <Route path="*" element={<NotFoundPage />} /> */
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </div>
         </div>

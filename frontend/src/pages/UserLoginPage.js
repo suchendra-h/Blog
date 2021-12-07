@@ -6,17 +6,24 @@ import { useToken } from "../auth/useToken";
 import { useQueryParams } from "../util/useQueryParams.js";
 import { getUserFromToken } from "../auth/useToken.js";
 import { UserContext } from "../contexts/UserContextProvider";
+import validator from "validator";
 
 export const UserLoginPage = () => {
   const context = useContext(UserContext);
   const [token, setToken] = useToken("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //   const [errorTxt, setErrorTxt] = useState("");
+  const [errorTxt, setErrorTxt] = useState("");
   const [googleOauthUrl, setGoogleOauthURL] = useState("");
 
   const navigate = useNavigate();
   const { token: oauthToken } = useQueryParams();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setErrorTxt("");
+    }, 1500);
+  }, [errorTxt]);
 
   // When token changes, sets the parent components user state.
   // From the new token
@@ -42,6 +49,7 @@ export const UserLoginPage = () => {
         const { url } = response.data;
         setGoogleOauthURL(url);
       } catch (error) {
+        setGoogleOauthURL("");
         console.log(error);
       }
     };
@@ -50,23 +58,58 @@ export const UserLoginPage = () => {
 
   // Loging button click handler, token is null if query fails
   const onLoginClicked = async () => {
-    const response = await axios.post("/api/login", {
-      email: email,
-      password: password,
-    });
-    const { token } = response.data;
-    setToken(token);
-    navigate("/user");
+    const response = await axios
+      .post("/api/login", {
+        email: email,
+        password: password,
+      })
+      // handle response
+      .then(function (response) {
+        console.log(response);
+        const { token } = response.data;
+        setToken(token);
+        navigate("/user");
+      })
+      // handle failure
+      .catch(function (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          if (error.response.status === 401) {
+            setErrorTxt("Invalid username or password");
+          }
+          //   console.log(error.response.data);
+          //   console.log(error.response.status);
+          //   console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          setErrorTxt("No response received from server");
+          //   console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          setErrorTxt("Oops, some error happened!");
+          //   console.log("Error", error.message);
+        }
+        // console.log(error.config);
+      });
   };
   return (
     <div className="page-container">
       <div className="content-container ">
         <h1>Log in</h1>
+        {errorTxt ? <p className="fail">{errorTxt}</p> : <p></p>}
         <input
           type="username"
           placeholder="someone@example.com"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
+          onBlur={(e) => {
+            if (!validator.isEmail(e.target.value)) {
+              setErrorTxt("Please enter a valid email");
+            }
+          }}
         />
         <input
           type="password"

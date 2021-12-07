@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../static/css/UserLoginPage.css";
-import { UserLoginPage } from "./UserLoginPage";
 import { useToken } from "../auth/useToken";
 import axios from "axios";
 
 export const UserSignUpPage = () => {
-  const [token, setToken] = useToken();
+  const [, setToken] = useToken();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
