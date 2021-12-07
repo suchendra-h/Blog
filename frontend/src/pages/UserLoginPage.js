@@ -4,6 +4,7 @@ import "../static/css/UserLoginPage.css";
 import axios from "axios";
 import { useToken } from "../auth/useToken";
 import { useQueryParams } from "../util/useQueryParams.js";
+import getUserFromToken from "../util/getUserFromToken";
 import { UserContext } from "../contexts/UserContextProvider";
 
 export const UserLoginPage = () => {
@@ -13,17 +14,21 @@ export const UserLoginPage = () => {
   const [password, setPassword] = useState("");
   //   const [errorTxt, setErrorTxt] = useState("");
   const [googleOauthUrl, setGoogleOauthURL] = useState("");
+
   const navigate = useNavigate();
   const { token: oauthToken } = useQueryParams();
+
+  // When token changes, sets the parent components user state.
+  // From the new token
+  useEffect(() => {
+    context.updateUser(getUserFromToken(token));
+  }, [token, context]);
 
   //   if there is an update in oauthToken sets the token to the new oauthToken
   useEffect(() => {
     if (oauthToken) {
       setToken(oauthToken);
-      let local_user = getUserFromToken(oauthToken);
-
-      props.setUser(local_user);
-
+      context.updateUser(getUserFromToken(oauthToken));
       navigate("/user");
     }
   }, [oauthToken, context, setToken, navigate]);
@@ -71,20 +76,8 @@ export const UserLoginPage = () => {
         <button disabled={!email || !password} onClick={onLoginClicked}>
           Log in
         </button>
-        <button
-          onClick={() => {
-            navigate("/forgot-password");
-          }}
-        >
-          Forgot your pasword?
-        </button>
-        <button
-          onClick={() => {
-            navigate("/signup");
-          }}
-        >
-          Don't have an account? Sign Up
-        </button>
+        <button>Forgot your pasword?</button>
+        <button>Don't have an account? Sign Up</button>
         <hr></hr>
 
         <button
