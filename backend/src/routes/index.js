@@ -13,7 +13,7 @@ import { awsSignUpRoute } from "./awsSignUpRoute.js";
 
 import { updateUserInfoRoute } from "./updateUserInfoRoute.js";
 import { verifyEmailRoute } from "./verifyEmailRoute.js";
-import { awsVerifyEmailRoute } from "./verifyEmailRoute.js";
+import { awsVerifyEmailRoute } from "./awsVerifyEmailRoute.js";
 
 import { awsForgotPasswordRoute } from "./awsForgotPasswordRoute.js";
 import { awsResetPasswordRoute } from "./awsResetPasswordRoute.js";
