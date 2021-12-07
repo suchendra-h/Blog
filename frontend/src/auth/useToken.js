@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { UserContext } from "../contexts/UserContextProvider";
 
 // Parses the token to extract payload
-const getUserFromToken = (token) => {
+export const getUserFromToken = (token) => {
   if (!token) {
     return null;
   } else {
@@ -14,11 +14,16 @@ const getUserFromToken = (token) => {
 export const useToken = () => {
   const context = useContext(UserContext);
   const [token, setTokenInternal] = useState(() => {
-    return localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+    return token;
   });
 
   const setToken = (newToken) => {
-    localStorage.setItem("token", newToken);
+    if (newToken) {
+      localStorage.setItem("token", newToken);
+    } else {
+      localStorage.setItem("token", "");
+    }
     context.updateUser(getUserFromToken(newToken));
     setTokenInternal(newToken);
   };

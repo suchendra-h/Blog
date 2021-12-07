@@ -4,7 +4,7 @@ import "../static/css/UserLoginPage.css";
 import axios from "axios";
 import { useToken } from "../auth/useToken";
 import { useQueryParams } from "../util/useQueryParams.js";
-import getUserFromToken from "../util/getUserFromToken";
+import { getUserFromToken } from "../auth/useToken.js";
 import { UserContext } from "../contexts/UserContextProvider";
 
 export const UserLoginPage = () => {
@@ -76,8 +76,20 @@ export const UserLoginPage = () => {
         <button disabled={!email || !password} onClick={onLoginClicked}>
           Log in
         </button>
-        <button>Forgot your pasword?</button>
-        <button>Don't have an account? Sign Up</button>
+        <button
+          onClick={() => {
+            navigate("/forgot-password");
+          }}
+        >
+          Forgot your pasword?
+        </button>
+        <button
+          onClick={() => {
+            navigate("/signup");
+          }}
+        >
+          Don't have an account? Sign Up
+        </button>
         <hr></hr>
 
         <button

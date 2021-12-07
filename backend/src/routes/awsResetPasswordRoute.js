@@ -14,11 +14,11 @@ export const awsResetPasswordRoute = {
 
     const callbacks = {
       onSuccess: () => {
-        console.log(`Password successfully changed for user ${email}`);
+        // console.log(`Password successfully changed for user ${email}`);
         res.sendStatus(200);
       },
       onFailure: (err) => {
-        console.log(`Error happened in pass reset for user ${email} :\n`, err);
+        // console.log(`Error happened in pass reset for user ${email} :\n`, err);
         res.status(401).send(err);
       },
     };

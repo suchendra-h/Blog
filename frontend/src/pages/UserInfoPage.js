@@ -28,7 +28,7 @@ export const UserInfoPage = () => {
 
   // TODO: Find why react gives an error even if we are going to redirect to login in above useEffect hook.
   const { id, email, isVerified, info } = user ? user : {};
-  console.log("is verified", isVerified);
+
   // These state variables control whether or not we show
   // the success and error message sections after making
   // a network request (see JSX below).
@@ -71,7 +71,6 @@ export const UserInfoPage = () => {
 
   const logOut = () => {
     localStorage.removeItem("token");
-    setToken(null);
     navigate("/login");
   };
 

@@ -1,22 +1,14 @@
-import { useState, useEffect, useCallback, useContext } from "react";
-import { useToken } from "./useToken";
+import { useState, useEffect, useContext } from "react";
+import { useToken, getUserFromToken } from "./useToken";
 import { UserContext } from "../contexts/UserContextProvider";
 
-export const useUser = (props) => {
+export const useUser = () => {
   const context = useContext(UserContext);
-
   const [token] = useToken();
-
-  //   getPayloadFromToken is a memoized function.
-  //   It only runs if token has been changed.
-  const getPayloadFromToken = useCallback(() => {
-    const encodedPayload = token.split(".")[1];
-    return JSON.parse(Buffer.from(encodedPayload, "base64"));
-  }, [token]);
 
   const [user, setUser] = useState(() => {
     if (!token) return null;
-    return getPayloadFromToken(token);
+    return getUserFromToken(token);
   });
 
   // returned variable is a state of this component.
@@ -26,11 +18,11 @@ export const useUser = (props) => {
     if (!token) {
       setUser(null);
     } else {
-      let local_user = getPayloadFromToken(token);
+      let local_user = getUserFromToken(token);
       setUser(local_user);
       context.updateUser(local_user);
     }
-  }, [token, context, getPayloadFromToken]);
+  }, [token, context]);
 
   return user;
 };

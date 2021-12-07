@@ -28,7 +28,6 @@ import { AwsForgotPasswordPage } from "../pages/AwsForgotPasswordPage";
 import { ForgotPasswordPage } from "../pages/ForgotPasswordPage";
 import { AwsPasswordResetLandingPage } from "../pages/AwsPasswordResetLandingPage";
 
-
 import UserProviderComponent from "../contexts/UserContextProvider";
 
 const App = () => {
@@ -46,6 +45,22 @@ const App = () => {
               <Route path="/login" element={<UserLogInPage />} />
               <Route path="/signup" element={<UserSignUpPage />} />
               <Route path="/user" element={<UserInfoPage />} />
+              <Route
+                path="/forgot-password"
+                element={<AwsForgotPasswordPage />}
+              />
+              <Route
+                path="/reset-password"
+                element={<AwsPasswordResetLandingPage />}
+              />
+              <Route
+                path="/please-verify"
+                element={<PleaseVerifyEmailPage />}
+              />
+              <Route
+                path="/verify-email"
+                element={<EmailVerificationCodePage />}
+              />
               <Route path="*" element={<NotFoundPage />} /> */
             </Routes>
           </div>
